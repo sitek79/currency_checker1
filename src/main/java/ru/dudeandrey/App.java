@@ -21,6 +21,12 @@ public class App extends Application {
     static final Logger userLogger = LogManager.getLogger(App.class);
 
     @Override
+    public void init() {
+        String name = Thread.currentThread().getName();
+        System.out.println("init() method: " + name);
+    }
+
+    @Override
     public void start(Stage stage) throws IOException {
         //
         rootLogger.info("Root Logger:");
@@ -33,6 +39,12 @@ public class App extends Application {
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void stop() {
+        String name = Thread.currentThread().getName();
+        System.out.println("stop() method: " + name);
     }
 
     public static void main(String[] args) {
