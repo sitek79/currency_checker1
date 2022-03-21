@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Timer;
 
 import static ru.dudeandrey.MyTimerTask.runTimer;
+import static ru.dudeandrey.RequestHTTPGet.requestHTTPGet;
 
 public class AppController {
 
@@ -30,6 +31,7 @@ public class AppController {
     @FXML
     protected void onGBPButtonClick() {
         gbp.setText("GBP!");
+        requestHTTPGet();
     }
 
     @FXML
