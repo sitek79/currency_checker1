@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import ru.dudeandrey.db.DBApp;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,6 +14,8 @@ import static ru.dudeandrey.MyTimerTask.runTimer;
 import static ru.dudeandrey.RequestHTTPGet.requestHTTPGet;
 
 public class AppController {
+    //SQLiteJDBC sql = new SQLiteJDBC();
+    DBApp dba = new DBApp();
 
     @FXML
     private Label time;
@@ -37,11 +40,15 @@ public class AppController {
     @FXML
     protected void onUSDButtonClick() {
         usd.setText("USD!");
+        //ReadProperties.writeProperties();
+        //ReadProperties.loadProperties();
+        ReadProperties.loadProperty("API_KEY");
     }
 
     @FXML
     protected void onCHFButtonClick() {
         chf.setText("CHF!");
+        dba.dbapp();
     }
 
     @FXML

@@ -22,7 +22,9 @@ import java.util.List;
 
 public class RequestHTTPGet {
 
-    private static String apiKey = "1c22c593-0562-42ad-819d-581ee79d5bb4";
+    //private static String apiKey = "1c22c593-0562-42ad-819d-581ee79d5bb4";
+    // loading API_KEY from config.properties
+    private static String apiKey = ReadProperties.loadProperty("API_KEY");
 
     public static void requestHTTPGet() {
         String uri = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest";
