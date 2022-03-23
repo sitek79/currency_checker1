@@ -3,22 +3,26 @@ package ru.dudeandrey.db;
 public class Currency {
     // Поля класса
     public int id;
-    public String good;
+    public String date_time;
+    public String name;
     public double price;
-    public String category_name;
+    public String category;
+    public String in_stock;
 
     // Конструктор
-    public Currency(int id, String good, double price, String category_name) {
+    public Currency(int id, String date_time, String name, double price, String category, String in_stock) {
         this.id = id;
-        this.good = good;
+        this.date_time = date_time;
+        this.name = name;
         this.price = price;
-        this.category_name = category_name;
+        this.category = category;
+        this.in_stock = in_stock;
     }
 
     // Выводим информацию по продукту
     @Override
     public String toString() {
-        return String.format("ID: %s | Товар: %s | Цена: %s | Категория: %s",
-                this.id, this.good, this.price, this.category_name);
+        return String.format("ID: %s | Date: %s | Товар: %s | Цена: %s | Категория: %s | stock: %s",
+                this.id, this.date_time, this.name, this.price, this.category, this.in_stock);
     }
 }

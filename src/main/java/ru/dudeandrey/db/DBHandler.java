@@ -40,13 +40,15 @@ public class DBHandler {
             List<Currency> products = new ArrayList<Currency>();
             // В resultSet будет храниться результат нашего запроса,
             // который выполняется командой statement.executeQuery()
-            ResultSet resultSet = statement.executeQuery("SELECT id, good, price, category_name FROM products");
+            ResultSet resultSet = statement.executeQuery("SELECT id, date_time, name, price, category, in_stock FROM products");
             // Проходимся по нашему resultSet и заносим данные в products
             while (resultSet.next()) {
                 products.add(new Currency(resultSet.getInt("id"),
-                        resultSet.getString("good"),
+                        resultSet.getString("date_time"),
+                        resultSet.getString("name"),
                         resultSet.getDouble("price"),
-                        resultSet.getString("category_name")));
+                        resultSet.getString("category"),
+                        resultSet.getString("in_stock")));
             }
             // Возвращаем наш список
             return products;
@@ -62,11 +64,13 @@ public class DBHandler {
     public void addProduct(Currency product) {
         // Создадим подготовленное выражение, чтобы избежать SQL-инъекций
         try (PreparedStatement statement = this.connection.prepareStatement(
-                "INSERT INTO Products(`good`, `price`, `category_name`) " +
-                        "VALUES(?, ?, ?)")) {
-            statement.setObject(1, product.good);
-            statement.setObject(2, product.price);
-            statement.setObject(3, product.category_name);
+                "INSERT INTO Products(`date_time`, `name`, `price`, `category`, `in_stock`) " +
+                        "VALUES(?, ?, ?, ?, ?)")) {
+            statement.setObject(1, product.date_time);
+            statement.setObject(2, product.name);
+            statement.setObject(3, product.price);
+            statement.setObject(4, product.category);
+            statement.setObject(5, product.in_stock);
             // Выполняем запрос
             statement.execute();
         } catch (SQLException e) {
