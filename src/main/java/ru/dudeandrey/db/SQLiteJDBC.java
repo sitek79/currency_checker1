@@ -9,11 +9,13 @@ public class SQLiteJDBC {
     public static Connection connection;
     public static Statement statmt;
 
+    boolean statusDB = true;
+
     public SQLiteJDBC() {
         connectToSQLite();
     }
 
-    public void connectToSQLite() {
+    public String connectToSQLite() {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:currency.db");
@@ -23,9 +25,11 @@ public class SQLiteJDBC {
         } catch (ClassNotFoundException excl) {
             excl.printStackTrace(); // error handling  Class.forName
             System.out.println("JDBC not found!");
+            statusDB = false;
         } catch (SQLException exsq) {
             exsq.printStackTrace(); // error handling  DriverManager.getConnection
             System.out.println("SQL Error!");
+            statusDB = false;
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
@@ -35,10 +39,17 @@ public class SQLiteJDBC {
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.out.println("... database closing error");
+                statusDB = false;
             } finally {
                 System.out.println("DB Disconnected");
             }
         }
         System.out.println("Connection to SQLite DB completed.");
+        if (statusDB) {
+            return "Ok!";
+        }
+        else {
+            return "Error...";
+        }
     }
 }

@@ -46,7 +46,7 @@
       <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField layoutX="91.0" layoutY="49.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button fx:id="LoginButton" alignment="CENTER" contentDisplay="CENTER" onAction="#switchToAppController" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-      <TextField GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <TextField fx:id="confFile" promptText="conf file status" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets bottom="2.0" left="5.0" right="50.0" top="2.0" />
          </GridPane.margin>
@@ -54,7 +54,7 @@
             <Font size="10.0" />
          </font>
       </TextField>
-      <TextField layoutX="30.0" layoutY="19.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <TextField fx:id="dbFile" layoutX="30.0" layoutY="19.0" promptText="DB file status" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets bottom="2.0" left="5.0" right="50.0" top="2.0" />
          </GridPane.margin>
@@ -62,7 +62,7 @@
             <Font size="10.0" />
          </font>
       </TextField>
-      <TextField layoutX="84.0" layoutY="85.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <TextField fx:id="dbTable" layoutX="84.0" layoutY="85.0" promptText="DB Tables status" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets bottom="2.0" left="5.0" right="50.0" top="2.0" />
          </GridPane.margin>

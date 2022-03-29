@@ -66,7 +66,7 @@ public class AppController {
     String datetime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
 
     protected void setTime() {
-       //time.setText(datetime);
+        //time.setText(datetime);
         // или обновим содержимое label из потока, не относящегося к FX application thread.
         // так же можно использовать javafx.concurrent.Task
         Platform.runLater(() -> time.setText(datetime));
