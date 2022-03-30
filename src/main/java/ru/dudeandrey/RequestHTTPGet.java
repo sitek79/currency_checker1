@@ -18,7 +18,14 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class RequestHTTPGet {
 
@@ -28,16 +35,50 @@ public class RequestHTTPGet {
 
     public static void requestHTTPGet() {
         String uri = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest";
-        List<NameValuePair> paratmers = new ArrayList<NameValuePair>();
+        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
         //paratmers.add(new BasicNameValuePair("start","1"));
         //paratmers.add(new BasicNameValuePair("limit","5000"));
         //paratmers.add(new BasicNameValuePair("convert","USD"));
-        paratmers.add(new BasicNameValuePair("symbol","ADA"));
-        paratmers.add(new BasicNameValuePair("convert","RUB"));
+        parameters.add(new BasicNameValuePair("symbol","ADA"));
+        parameters.add(new BasicNameValuePair("convert","RUB"));
 
         try {
-            String result = makeAPICall(uri, paratmers);
+            String result = makeAPICall(uri, parameters);
+            System.out.println("Result");
             System.out.println(result);
+            // ------------ разбираем JSON ответ ------------
+            // Считываем json
+            try {
+                // конвертируем строку с Json в JSONObject для дальнейшего его парсинга
+                JSONObject weatherJsonObject = (JSONObject) JSONValue.parseWithException(result);
+
+                // получаем название города, для которого смотрим погоду
+                System.out.println("Status: " + weatherJsonObject.get("status"));
+                System.out.println("Data: " + weatherJsonObject.get("data"));
+
+                // получаем массив элементов для поля weather
+            /* ... "weather": [
+            {
+                "id": 500,
+                    "main": "Rain",
+                    "description": "light rain",
+                    "icon": "10d"
+            }
+            ], ... */
+                JSONArray weatherArray = (JSONArray) weatherJsonObject.get("timestamp");
+                // достаем из массива первый элемент
+                JSONObject weatherData = (JSONObject) weatherArray.get(0);
+
+                // печатаем текущую погоду в консоль
+                System.out.println("Погода на данный момент: " + weatherData.get("main"));
+                // и описание к ней
+                System.out.println("Более детальное описание погоды: " + weatherData.get("description"));
+
+            } catch (org.json.simple.parser.ParseException e) {
+                e.printStackTrace();
+            }
+
+            //
         } catch (IOException e) {
             System.out.println("Error: cannot access content - " + e.toString());
         } catch (URISyntaxException e) {
@@ -68,7 +109,8 @@ public class RequestHTTPGet {
         } finally {
             response.close();
         }
-
+        System.out.println("Response_content");
+        System.out.println(response_content);
         return response_content;
     }
 }
