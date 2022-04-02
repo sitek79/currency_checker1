@@ -4,6 +4,10 @@ package ru.dudeandrey;
  * This example uses the Apache HTTPComponents library.
  */
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
@@ -15,17 +19,19 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 
 public class RequestHTTPGet {
 
@@ -49,35 +55,33 @@ public class RequestHTTPGet {
             // ------------ разбираем JSON ответ ------------
             // Считываем json
             try {
-                // конвертируем строку с Json в JSONObject для дальнейшего его парсинга
-                JSONObject weatherJsonObject = (JSONObject) JSONValue.parseWithException(result);
+                // Чтение Gson
+                JsonParser parser = new JsonParser();
+                JsonElement jsonElement = parser.parse("{\"message\":\"Hi\",\"place\":{\"name\":\"World!\"}}");
 
-                // получаем название города, для которого смотрим погоду
-                System.out.println("Status: " + weatherJsonObject.get("status"));
-                System.out.println("Data: " + weatherJsonObject.get("data"));
-
-                // получаем массив элементов для поля weather
-            /* ... "weather": [
-            {
-                "id": 500,
-                    "main": "Rain",
-                    "description": "light rain",
-                    "icon": "10d"
+                JsonObject rootObject = jsonElement.getAsJsonObject(); // чтение главного объекта
+                String message = rootObject.get("message").getAsString(); // получить поле "message" как строку
+                JsonObject childObject = rootObject.getAsJsonObject("place"); // получить объект Place
+                String place = childObject.get("name").getAsString(); // получить поле "name"
+                System.out.println(message + " " + place); // напечатает "Hi World!"*///
+                //
+                // jsonString is of type java.lang.String
+                JsonObject jsonObject = JsonParser.parseString(result).getAsJsonObject();
+                //JsonArray ada = jsonObject.getAsJsonArray("data");
+                JsonArray ada = (JsonArray) jsonObject.get("data");
+                System.out.println(ada);
+                //
+            } catch (ClassCastException ecl) {
+                // ключ имеет неподходящий тип для этой карты
+                System.out.println("key is of an inappropriate type for this map");
+            } catch (NullPointerException npex) {
+                // указанный ключ равен null и эта карта не допускает нулевых ключей
+                System.out.println("Null pointer exception...");
             }
-            ], ... */
-                JSONArray weatherArray = (JSONArray) weatherJsonObject.get("timestamp");
-                // достаем из массива первый элемент
-                JSONObject weatherData = (JSONObject) weatherArray.get(0);
-
-                // печатаем текущую погоду в консоль
-                System.out.println("Погода на данный момент: " + weatherData.get("main"));
-                // и описание к ней
-                System.out.println("Более детальное описание погоды: " + weatherData.get("description"));
-
-            } catch (org.json.simple.parser.ParseException e) {
-                e.printStackTrace();
+            catch (Exception ex) {
+                //System.out.println("Error...");
+                ex.printStackTrace();
             }
-
             //
         } catch (IOException e) {
             System.out.println("Error: cannot access content - " + e.toString());
