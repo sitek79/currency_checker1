@@ -56,20 +56,23 @@ public class RequestHTTPGet {
             // Считываем json
             try {
                 // Чтение Gson
-                JsonParser parser = new JsonParser();
-                JsonElement jsonElement = parser.parse("{\"message\":\"Hi\",\"place\":{\"name\":\"World!\"}}");
-
-                JsonObject rootObject = jsonElement.getAsJsonObject(); // чтение главного объекта
-                String message = rootObject.get("message").getAsString(); // получить поле "message" как строку
-                JsonObject childObject = rootObject.getAsJsonObject("place"); // получить объект Place
-                String place = childObject.get("name").getAsString(); // получить поле "name"
-                System.out.println(message + " " + place); // напечатает "Hi World!"*///
+                JsonObject rootObject = JsonParser.parseString(result).getAsJsonObject(); //Ok
+                System.out.println(rootObject.get("status")); // Ok. Печатаем содержимое root объектов
+                System.out.println(rootObject.get("data")); // Ok. Печатаем содержимое root объектов
+                JsonObject jsonObject = JsonParser.parseString(String.valueOf(rootObject.get("status"))).getAsJsonObject(); //Ok
+                System.out.println(jsonObject.get("timestamp")); // Ok. получить поле "timestamp" как Объект
+                String timestamp = jsonObject.get("timestamp").getAsString(); // получить поле "timestamp" как строку
+                System.out.println(timestamp);
+                JsonObject jsonObject2 = JsonParser.parseString(String.valueOf(rootObject.get("data"))).getAsJsonObject(); //Ok
+                String price = String.valueOf(jsonObject2.get("ADA").getAsJsonArray()); // получить поле "ADA" как массив
+                System.out.println(price);
                 //
-                // jsonString is of type java.lang.String
-                JsonObject jsonObject = JsonParser.parseString(result).getAsJsonObject();
+                String price2 = String.valueOf(jsonObject2.get("ADA").getAsJsonObject().toString()); // получить поле "ADA" как массив
+                System.out.println("Это строка");
+                System.out.println(price2);
                 //JsonArray ada = jsonObject.getAsJsonArray("data");
-                JsonArray ada = (JsonArray) jsonObject.get("data");
-                System.out.println(ada);
+                //JsonArray ada = (JsonArray) jsonObject.get("data");
+                //System.out.println(ada);
                 //
             } catch (ClassCastException ecl) {
                 // ключ имеет неподходящий тип для этой карты
