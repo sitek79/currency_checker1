@@ -6,6 +6,7 @@ module ru.dudeandrey {
     requires org.apache.httpcomponents.httpclient;
     requires java.sql;
     requires com.google.gson;
+    requires com.fasterxml.jackson.databind;
 
     opens ru.dudeandrey to javafx.fxml;
     exports ru.dudeandrey;

@@ -4,10 +4,7 @@ package ru.dudeandrey;
  * This example uses the Apache HTTPComponents library.
  */
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
@@ -25,19 +22,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RequestHTTPGet {
 
     //private static String apiKey = "1c22c593-0562-42ad-819d-581ee79d5bb4";
     // loading API_KEY from config.properties
     private static String apiKey = ReadProperties.loadProperty("API_KEY");
+
+    //private static SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 
     public static void requestHTTPGet() {
         String uri = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest";
@@ -65,14 +66,40 @@ public class RequestHTTPGet {
                 System.out.println(timestamp);
                 JsonObject jsonObject2 = JsonParser.parseString(String.valueOf(rootObject.get("data"))).getAsJsonObject(); //Ok
                 String price = String.valueOf(jsonObject2.get("ADA").getAsJsonArray()); // получить поле "ADA" как массив
+                String price2 = jsonObject2.get("ADA").getAsJsonArray().toString(); // получить поле "ADA" как массив (выражения эквивалентны)
                 System.out.println(price);
-                //
-                String price2 = String.valueOf(jsonObject2.get("ADA").getAsJsonObject().toString()); // получить поле "ADA" как массив
-                System.out.println("Это строка");
                 System.out.println(price2);
-                //JsonArray ada = jsonObject.getAsJsonArray("data");
-                //JsonArray ada = (JsonArray) jsonObject.get("data");
-                //System.out.println(ada);
+                //
+                JsonObject jsonObject3 = new Gson().fromJson(result, JsonObject.class); // Ok
+                System.out.println(jsonObject3.get("status"));
+                System.out.println(jsonObject3.get("data"));
+                System.out.println(jsonObject3.get("symbol"));
+                //System.out.println(jsonObject3.get("email"));
+                //
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    // convert JSON string to Map
+                    // у нас два root объекта: status и data
+                    // это сеты: result -> все объекты, jsonObject -> status, jsonObject2 -> data
+                    Map<String, String> map = mapper.readValue(jsonObject2.toString(), Map.class);
+                    //Map<String, String> map = mapper.readValue(json, new TypeReference<Map<String, String>>() {});
+                    System.out.println("All Map");
+                    System.out.println(map);
+                    // получим весь набор ключей root (status, data)
+                    Set<String> keys = map.keySet();
+                    System.out.println("All keys"); // все ключи это root объекты
+                    System.out.println(keys);
+                    // получим объект по ключу ...
+                    System.out.println("key ..."); // все ключи это root объекты
+                    String first = map.get("name");
+                    System.out.println(first);
+                    // получить набор всех значений
+                    Collection<String> values = map.values();
+                    System.out.println("All values");
+                    System.out.println(values);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 //
             } catch (ClassCastException ecl) {
                 // ключ имеет неподходящий тип для этой карты
