@@ -73,10 +73,18 @@ public class RequestHTTPGet {
                 JsonObject jsonObject3 = new Gson().fromJson(result, JsonObject.class); // Ok
                 System.out.println(jsonObject3.get("status"));
                 System.out.println(jsonObject3.get("data"));
-                System.out.println(jsonObject3.get("symbol"));
+                if (jsonObject3.isJsonArray()) {
+                    System.out.println("JsonArray");
+                    jsonObject3.get("data").getAsJsonArray().toString();
+                } else {
+                    System.out.println("JsonObject");
+                    System.out.println(jsonObject3.get("data").getAsJsonObject().get("ADA").getAsJsonArray().get(0));
+                }
+                //System.out.println(jsonObject3.get("symbol"));
                 //System.out.println(jsonObject3.get("email"));
                 //
-                ObjectMapper mapper = new ObjectMapper();
+                //
+                /*ObjectMapper mapper = new ObjectMapper();
                 try {
                     // convert JSON string to Map
                     // у нас два root объекта: status и data
@@ -99,7 +107,8 @@ public class RequestHTTPGet {
                     System.out.println(values);
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                }*/
+                //
                 //
             } catch (ClassCastException ecl) {
                 // ключ имеет неподходящий тип для этой карты

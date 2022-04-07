@@ -53,7 +53,7 @@ public class ReadProperties {
         }
     }
 
-    static String loadProperty(String pr) {
+    public static String loadProperty(String pr) {
         String prRet = null;
 
         try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {

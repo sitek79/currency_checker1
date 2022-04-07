@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import ru.dudeandrey.db.DBApp;
+import ru.dudeandrey.jsonworker.RequestHTTPGetv2;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import static ru.dudeandrey.RequestHTTPGet.requestHTTPGet;
 public class AppController {
     //SQLiteJDBC sql = new SQLiteJDBC();
     DBApp dba = new DBApp();
+    RequestHTTPGetv2 rhtg = new RequestHTTPGetv2();
 
     @FXML
     private Label time;
@@ -34,7 +36,8 @@ public class AppController {
     @FXML
     protected void onGBPButtonClick() {
         gbp.setText("GBP!");
-        requestHTTPGet();
+        //requestHTTPGet();
+        rhtg.requestHTTPGetv2();
     }
 
     @FXML
