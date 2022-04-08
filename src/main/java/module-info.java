@@ -7,6 +7,7 @@ module ru.dudeandrey {
     requires java.sql;
     requires com.google.gson;
     requires com.fasterxml.jackson.databind;
+    requires java.annotation;
 
     opens ru.dudeandrey to javafx.fxml;
     exports ru.dudeandrey;
